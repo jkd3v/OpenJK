@@ -36,6 +36,7 @@ along with this program; if not, see <http://www.gnu.org/licenses/>.
 #include "cl_lan.h"
 #include "snd_local.h"
 #include "sys/sys_loadlib.h"
+#include "mpp/mppHeader.h"
 
 cvar_t	*cl_renderer;
 
@@ -2836,6 +2837,8 @@ void CL_Init( void ) {
 	CL_GenerateQKey();
 	CL_UpdateGUID( NULL, 0 );
 
+	mppInit();
+
 //	Com_Printf( "----- Client Initialization Complete -----\n" );
 }
 
@@ -2856,6 +2859,8 @@ void CL_Shutdown( void ) {
 		return;
 	}
 	recursive = qtrue;
+
+	mppDestroy();
 
 	if (G2VertSpaceClient)
 	{
