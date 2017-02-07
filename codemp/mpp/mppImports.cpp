@@ -7,7 +7,7 @@
 * their own plugin.
 **************************************************/
 
-#include "mppHeader.h"
+#include <mpp/mppHeader.h>
 
 /**************************************************
 * Com_ConcatArgs

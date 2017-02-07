@@ -7,8 +7,8 @@
 * their own plugin.
 **************************************************/
 
-#include "mppHeader.h"
-#include "qcommon/cm_public.h"
+#include <mpp/mppHeader.h>
+#include <qcommon/cm_public.h>
 
 /**************************************************
 * Don't export these.. direct screenshot access.

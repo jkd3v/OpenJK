@@ -7,15 +7,19 @@
 * their own plugin.
 **************************************************/
 
-#include "mppHeader.h"
-#include "qcommon/cm_public.h"
-#include "qcommon/RoffSystem.h"
-#include "qcommon/stringed_ingame.h"
-#include "qcommon/timing.h"
-#include "client/cl_uiapi.h"
-#include "client/snd_ambient.h"
-#include "client/FxUtil.h"
-#include "client/FXExport.h"
+//#include <cstddef>
+#include <mpp/mppHeader.h>
+#include <qcommon/cm_public.h>
+#include <qcommon/RoffSystem.h>
+#include <qcommon/stringed_ingame.h>
+#include <qcommon/timing.h>
+#include <client/cl_uiapi.h>
+#include <botlib/botlib.h>
+#include <client/snd_ambient.h>
+#include <client/FXExport.h>
+#include <client/FxUtil.h>
+
+
 
 extern qboolean cl_bUseFighterPitch;
 extern int CL_GetValueForHidden(const char *s);

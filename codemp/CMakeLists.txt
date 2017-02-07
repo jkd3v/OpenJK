@@ -457,13 +457,13 @@ if(BuildMPEngine)
 	set(MPEngineFiles ${MPEngineFiles} ${MPEngineClientFiles})
 
 	set(MPEngineMppFiles
-		"${MPDir}/mpp/mpp.c"
-    	"${MPDir}/mpp/mppGame.c"
     	"${MPDir}/mpp/mppHeader.h"
-    	"${MPDir}/mpp/mppImports.c"
-    	"${MPDir}/mpp/mppPlugin.c"
     	"${MPDir}/mpp/mppShared.h"
-    	"${MPDir}/mpp/mppSystem.c"
+		"${MPDir}/mpp/mpp.cpp"
+    	"${MPDir}/mpp/mppGame.cpp"
+    	"${MPDir}/mpp/mppImports.cpp"
+    	"${MPDir}/mpp/mppPlugin.cpp"
+    	"${MPDir}/mpp/mppSystem.cpp"
 		)
 	source_group("mpp" FILES ${MPEngineMppFiles})
 	set(MPEngineFiles ${MPEngineFiles} ${MPEngineMppFiles})

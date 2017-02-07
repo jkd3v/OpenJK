@@ -24,9 +24,9 @@
 
 #include <windows.h>
 #include <stdio.h>
-#include "../client/client.h"
-#include "../cgame/cg_local.h"				// SDK
-#include "mppShared.h"						// MultPlugin Shared
+#include <client/client.h>
+#include <cgame/cg_local.h>
+#include <mpp/mppShared.h>
 
 
 typedef struct {

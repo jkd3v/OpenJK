@@ -7,7 +7,7 @@
 * their own plugin.
 **************************************************/
 
-#include "mppHeader.h"
+#include <mpp/mppHeader.h>
 
 intptr_t CL_CgameSystemCalls(intptr_t *args);
 intptr_t CGMainCall(int command, intptr_t arg0, intptr_t arg1, intptr_t arg2, intptr_t arg3, intptr_t arg4, intptr_t arg5, intptr_t arg6, intptr_t arg7, intptr_t arg8, intptr_t arg9, intptr_t arg10, intptr_t arg11);

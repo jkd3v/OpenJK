@@ -7,7 +7,7 @@
 * their own plugin.
 **************************************************/
 
-#include "mppHeader.h"
+#include <mpp/mppHeader.h>
 
 /**************************************************
 * This is the Shared Buffer across all the modules,
