@@ -140,13 +140,37 @@ cvar_t *mppLocateCvar(char *name)
 * Calculates the position of the text and renders is.
 **************************************************/
 
-void mppRawTextCalculateDraw( char *lpString, float x, float y, float fScale, int iFont, int iLines )
+void mppRawTextCalculateDraw( char *lpString, float x, float y, float fScale, int iFont, int iLines, TextAlign align )
 {
 	if ( !MultiPlugin.inScreenshot )
 	{
 		vec4_t w = { 1, 1, 1, 1 };
 		re->SetColor(w);
-		re->Font_DrawString(x - (mppRawTextCalculateWidth(lpString, iFont, fScale) / 2), y - 5 + (mppRawTextCalculateHeight(iFont, fScale) * iLines), lpString, w, 0 | iFont, -1, fScale);
+		int _x, _y;
+		// Define x
+		if (align == TopLeft || align == MiddleLeft || align == BottomLeft) {
+			_x = x;
+		}
+		else if (align == TopCenter || align == MiddleCenter || align == BottomCenter) {
+			_x = x - mppRawTextCalculateWidth(lpString, iFont, fScale) / 2;
+		}
+		else {
+			_x = x - mppRawTextCalculateWidth(lpString, iFont, fScale);
+		}
+
+		// Define y
+		if (align == TopLeft || align == TopCenter || align == TopRight) {
+			_y = y;
+		}
+		else if (align == MiddleLeft || align == MiddleCenter || align == MiddleRight) {
+			_y = y - (mppRawTextCalculateHeight(iFont, fScale) * iLines)/2;
+		}
+		else {
+			_y = y - mppRawTextCalculateHeight(iFont, fScale) * iLines;
+		}
+
+		// Draw
+		re->Font_DrawString(_x, _y, lpString, w, 0 | iFont, -1, fScale);
 		re->SetColor(w);
 	}
 }
@@ -182,7 +206,7 @@ int mppRawTextCalculateWidth( char *lpString, int iFont, float fScale )
 * Renders the provided text at the entity position.
 **************************************************/
 
-int mppRenderTextAtEntity( int iIndex, char *lpString, qboolean bCheckWall, qboolean bPersistant )
+int mppRenderTextAtEntity( int iIndex, char *lpString, qboolean bCheckWall, qboolean bPersistant, TextAlign align )
 {
 	int		i, iReturn = iRenders, iLines = 0;
 
@@ -209,6 +233,7 @@ int mppRenderTextAtEntity( int iIndex, char *lpString, qboolean bCheckWall, qboo
 	pRenders[iRenders].iLines = iLines;
 	pRenders[iRenders].bCheckWall = bCheckWall;
 	pRenders[iRenders].bPersistant = bPersistant;
+	pRenders[iRenders].align = align;
 	iRenders++;
 
 	return iReturn;
@@ -220,7 +245,7 @@ int mppRenderTextAtEntity( int iIndex, char *lpString, qboolean bCheckWall, qboo
 * Renders the provided text at the provided origin.
 **************************************************/
 
-int mppRenderTextAtVector( vec3_t origin, char *lpString, qboolean bCheckWall, qboolean bPersistant )
+int mppRenderTextAtVector( vec3_t origin, char *lpString, qboolean bCheckWall, qboolean bPersistant, TextAlign align )
 {
 	int iReturn = iRenders;
 
@@ -233,6 +258,7 @@ int mppRenderTextAtVector( vec3_t origin, char *lpString, qboolean bCheckWall, q
 	pRenders[iRenders].iIndex = -1;
 	pRenders[iRenders].bCheckWall = bCheckWall;
 	pRenders[iRenders].bPersistant = bPersistant;
+	pRenders[iRenders].align = align;
 		
 	VectorCopy( origin, pRenders[iRenders].vOrigin );
 	iRenders++;
@@ -251,6 +277,7 @@ void mppRenderTextClear( int iIndex )
 	if ( iIndex >= 0 && iIndex < 1024 )
 	{
 		pRenders[iIndex].bPersistant = qfalse;
+		pRenders[iIndex].align = MiddleCenter;
 	}
 }
 
@@ -294,7 +321,7 @@ void mppRenderTextFinalize( void )
 				fScale = 320 / VectorLength( vLength );
 				fScale = ( fScale > 0.4 ) ? 0.4 : fScale;
 				fScale = ( fScale < 0.3 ) ? 0.3 : fScale;
-				mppRawTextCalculateDraw( pRenders[i].lpText, x, y, fScale, iFont, pRenders[i].iLines );
+				mppRawTextCalculateDraw( pRenders[i].lpText, x, y, fScale, iFont, pRenders[i].iLines, pRenders[i].align );
 			}
 		}
 

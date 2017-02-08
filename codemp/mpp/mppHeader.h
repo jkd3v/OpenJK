@@ -51,6 +51,7 @@ typedef struct
 	int			 iIndex;		// If set to -1, use the raw vector instead.
 	int			 iLines;		// Increments the number of lines added for a specific entity.
 	vec3_t		 vOrigin;		// The raw origin which is to be used when iIndex is invalid.
+	TextAlign	 align;
 
 } MultiRender_t;
 
@@ -92,11 +93,11 @@ qboolean		 mppIsPlayerInDuel(int iIndex);
 cmd_t			*mppLocateCommand(char *name);
 cvar_t			*mppLocateCvar(char *name);
 void			 mppPerformScreenshot(qboolean bDoScreenshot);
-void			 mppRawTextCalculateDraw(char *lpString, float x, float y, float fScale, int iFont, int iLines);
+void			 mppRawTextCalculateDraw(char *lpString, float x, float y, float fScale, int iFont, int iLines, TextAlign align);
 int				 mppRawTextCalculateHeight(int iFont, float fScale);
 int				 mppRawTextCalculateWidth(char *lpString, int iFont, float fScale);
-int				 mppRenderTextAtEntity(int iIndex, char *lpString, qboolean bCheckWall, qboolean bPersistant);
-int				 mppRenderTextAtVector(vec3_t origin, char *lpString, qboolean bCheckWall, qboolean bPersistant);
+int				 mppRenderTextAtEntity(int iIndex, char *lpString, qboolean bCheckWall, qboolean bPersistant, TextAlign align);
+int				 mppRenderTextAtVector(vec3_t origin, char *lpString, qboolean bCheckWall, qboolean bPersistant, TextAlign align);
 void			 mppRenderTextClear(int iIndex);
 void			 mppRenderTextFinalize(void);
 qboolean		 mppRenderTextVisible(vec3_t origin, qboolean checkWalls);
