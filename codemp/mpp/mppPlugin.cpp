@@ -51,6 +51,7 @@ void mppPluginInit( MultiPlugin_t *pPlugin )
 	pPlugin->mppIsPlayerEntity			= mppIsPlayerEntity;
 	pPlugin->mppIsPlayerInDuel			= mppIsPlayerInDuel;
 	pPlugin->mppLocateCommand			= mppLocateCommand;
+	pPlugin->mppLocateCvar				= mppLocateCvar;
 	pPlugin->mppRawTextCalculateDraw	= mppRawTextCalculateDraw;
 	pPlugin->mppRawTextCalculateHeight	= mppRawTextCalculateHeight;
 	pPlugin->mppRawTextCalculateWidth	= mppRawTextCalculateWidth;
