@@ -43,27 +43,21 @@ snapshot_t			snap;
 extern vm_t *cgvm;
 void LoadPlugins()
 {
-	char folderName[256];
-	if (GetModuleFileName(NULL, folderName, 256) != 0) {
-		{
-			char * folderPtr = strrchr(folderName, '\\');
-			if (folderPtr) *folderPtr = '\0';
+		int numFiles;
+		char ** filesList = Sys_ListFiles("plugins", ".dll", "", &numFiles, qfalse);
+		
+		for (int i = 2; i < numFiles; i++) { // Ignore "." and ".."
+			if (cgvm->isLegacy) {
+				if (!Q_stricmpn(filesList[i]+1, "legacy_", 7)) {
+					mppPluginLoad(va("plugins/%s", filesList[i]+1));
+				}
+			}
+			else if (!Q_stricmpn(filesList[i]+1, "openjk_", 7)) {
+				mppPluginLoad(va("plugins/%s", filesList[i]+1));
+			}
 		}
-		HANDLE hFind;
-		WIN32_FIND_DATA FindData;
-		char filesNames[256];
-		if (cgvm->isLegacy) Com_sprintf(filesNames, 256, "%s\\plugins\\legacy_*.dll", folderName);
-		else Com_sprintf(filesNames, 256, "%s\\plugins\\openjk_*.dll", folderName);
-		hFind = FindFirstFile(filesNames, &FindData);
-		if (hFind != INVALID_HANDLE_VALUE)
-		{
-			do
-			{
-				mppPluginLoad(va("%s\\plugins\\%s", folderName, FindData.cFileName));
-			} while (FindNextFile(hFind, &FindData));
-			FindClose(hFind);
-		}
-	}
+
+		Sys_FreeFileList(filesList);
 }
 
 /**************************************************
@@ -77,7 +71,7 @@ void UnloadPlugins()
 	MultiModule_t *pMultiModule = MultiModule;
 	while (pMultiModule) {
 		MultiModule_t *next = (MultiModule_t *)pMultiModule->pNextPlugin;
-		FreeLibrary((HMODULE)pMultiModule->hMod);
+		SDL_UnloadObject(pMultiModule->hMod);
 		free(pMultiModule);
 		pMultiModule = next;
 	}

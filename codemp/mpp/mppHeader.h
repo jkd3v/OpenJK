@@ -22,11 +22,11 @@
 //	- Team Colorization		(Always, Rendering Flags)
 //	- Texture Replacement	(Always, R_FindShader, Tracing Textures, Remap Data)
 
-#include <windows.h>
 #include <stdio.h>
 #include <client/client.h>
 #include <cgame/cg_local.h>
 #include <mpp/mppShared.h>
+#include <SDL_loadso.h>
 
 
 typedef struct {

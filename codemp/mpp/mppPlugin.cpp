@@ -447,21 +447,20 @@ void mppPluginLoad(char *zModule)
 
 	MultiModule_t *newModule = (MultiModule_t *)malloc(sizeof(MultiModule_t));
 	memset(newModule, 0, sizeof(MultiModule_t));
-	newModule->hMod = LoadLibrary(zModule);								// Store the handle of this module for future reference.
+	newModule->hMod = SDL_LoadObject(zModule);
 
 	/**************************************************
 	* See if we can find an entry point to give the
 	* MultiPlugin structure and system call pointers.
 	**************************************************/
 	if (newModule->hMod) {
-		void(*entryCall)(MultiPlugin_t *) = (void(*)(MultiPlugin_t *)) GetProcAddress((HMODULE)newModule->hMod, "mpp");
+		void(*entryCall)(MultiPlugin_t *) = (void(*)(MultiPlugin_t *)) SDL_LoadFunction(newModule->hMod, "mpp");
 		if (entryCall != NULL)
 		{
 			// Link the system pointer to this system struct.
 			//MultiPlugin.System = (void *)&MultiSystem;
 
 			// Perform the entry call. When we're done, everything is free.
-			MultiPlugin.Com_Printf("LOADED MODULE: %s\n", zModule);
 			entryCall(&MultiPlugin);
 
 			/**************************************************
@@ -469,11 +468,11 @@ void mppPluginLoad(char *zModule)
 			* hide this module from the PEB. We're done now!
 			**************************************************/
 
-			newModule->pPreMainCall = (int(*)(int, int, int, int, int, int, int, int, int, int, int, int, int)) GetProcAddress((HMODULE)newModule->hMod, "mppPreMain");
-			newModule->pPostMainCall = (int(*)(int, int, int, int, int, int, int, int, int, int, int, int, int)) GetProcAddress((HMODULE)newModule->hMod, "mppPostMain");
+			newModule->pPreMainCall = (int(*)(int, int, int, int, int, int, int, int, int, int, int, int, int)) SDL_LoadFunction(newModule->hMod, "mppPreMain");
+			newModule->pPostMainCall = (int(*)(int, int, int, int, int, int, int, int, int, int, int, int, int)) SDL_LoadFunction(newModule->hMod, "mppPostMain");
 
-			newModule->pPreSystemCall = (int(*)(int *)) GetProcAddress((HMODULE)newModule->hMod, "mppPreSystem");
-			newModule->pPostSystemCall = (int(*)(int *)) GetProcAddress((HMODULE)newModule->hMod, "mppPostSystem");
+			newModule->pPreSystemCall = (int(*)(int *)) SDL_LoadFunction(newModule->hMod, "mppPreSystem");
+			newModule->pPostSystemCall = (int(*)(int *)) SDL_LoadFunction(newModule->hMod, "mppPostSystem");
 
 			// ADD IT
 			if (MultiModule == NULL) MultiModule = newModule;
