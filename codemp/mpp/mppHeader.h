@@ -72,11 +72,11 @@ extern int			  iRenders;
 * which modifications are able to alter.
 **************************************************/
 
-extern clientInfo_t	clientInfo[MAX_CLIENTS];
-extern vec3_t		currentOrigin[MAX_GENTITIES];;
-extern qboolean		currentValid[MAX_GENTITIES];
-extern refdef_t		refdef;
-extern snapshot_t	snap;
+extern mpp_clientInfo_t	 clientInfo[MAX_CLIENTS];
+extern vec3_t			 currentOrigin[MAX_GENTITIES];;
+extern qboolean			 currentValid[MAX_GENTITIES];
+extern refdef_t			 refdef;
+extern snapshot_t		 snap;
 
 /**************************************************
 * mppGame
@@ -127,6 +127,8 @@ void			 Com_StringEscape(char *in, char *out);
 
 void			 mppInit();
 void			 mppDestroy();
+void			 LoadPlugins();
+void			 UnloadPlugins();
 
 /**************************************************
 * mppPlugin

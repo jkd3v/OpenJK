@@ -137,6 +137,7 @@ int mppPluginCGMain( int cmd, int arg0, int arg1, int arg2, int arg3, int arg4, 
 	{
 		case CG_INIT:
 		{
+			LoadPlugins();
 			mppScreenshotDetour();
 			break;
 		}
@@ -225,6 +226,7 @@ int mppPluginCGMain( int cmd, int arg0, int arg1, int arg2, int arg3, int arg4, 
 
 	if (cmd == CG_SHUTDOWN) {
 		mppState = 0;
+		UnloadPlugins();
 	}
 
 	return (MultiPlugin.mainRetValue != MultiPlugin.noBreakCode ) ? MultiPlugin.mainRetValue : retFlag;
@@ -341,9 +343,9 @@ int mppPluginCGSystem( int *arg )
 			for ( i = 0; i < MAX_CLIENTS; i++ )
 			{
 				const char *configstring = ( const char * )(gameState->stringData + gameState->stringOffsets[CS_PLAYERS + i]);
-				clientInfo_t *ci = &clientInfo[i];
-				memset(ci, 0, sizeof(clientInfo_t));
-
+				mpp_clientInfo_t *ci = &clientInfo[i];
+				memset(ci, 0, sizeof(mpp_clientInfo_t));
+				
 				if ( !configstring[0] || Info_ValueForKey( configstring, "n" ) == NULL )
 				{
 					continue;
@@ -391,9 +393,8 @@ int mppPluginCGSystem( int *arg )
 			if ( snap.serverCommandSequence < arg[1] )
 			{
 				int i;
-
 				memset( &currentValid, 0, sizeof( qboolean ) * MAX_CLIENTS );
-				memcpy( &snap, ( snapshot_t * ) arg[2], sizeof( snapshot_t ));
+				memcpy( &snap, ( snapshot_t * ) arg[2], sizeof snapshot_t);
 
 				for ( i = 0; i < MAX_GENTITIES; i++ )
 				{

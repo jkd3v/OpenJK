@@ -3826,7 +3826,9 @@ void FS_Restart( int checksumFeed ) {
 	// if we can't find default.cfg, assume that the paths are
 	// busted and error out now, rather than getting an unreadable
 	// graphics screen when the font fails to load
-	if ( FS_ReadFile( "mpdefault.cfg", NULL ) <= 0 ) {
+
+	// Dev: I know what's in my game and it's always valid, kay?
+	/*if ( FS_ReadFile( "mpdefault.cfg", NULL ) <= 0 ) {
 		// this might happen when connecting to a pure server not using BASEGAME/pak0.pk3
 		// (for instance a TA demo server)
 		if (lastValidBase[0]) {
@@ -3840,7 +3842,7 @@ void FS_Restart( int checksumFeed ) {
 			return;
 		}
 		Com_Error( ERR_FATAL, "Couldn't load mpdefault.cfg" );
-	}
+	}*/
 
 	if ( Q_stricmp(fs_gamedirvar->string, lastValidGame) ) {
 		// skip the jampconfig.cfg if "safe" is on the command line

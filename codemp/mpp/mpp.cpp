@@ -26,11 +26,11 @@ int				 iRenders = 0;
 * which modifications are able to alter.
 **************************************************/
 
-clientInfo_t	clientInfo[MAX_CLIENTS];
-vec3_t			currentOrigin[MAX_GENTITIES];
-qboolean		currentValid[MAX_GENTITIES];
-refdef_t		refdef;
-snapshot_t		snap;
+mpp_clientInfo_t	clientInfo[MAX_CLIENTS];
+vec3_t				currentOrigin[MAX_GENTITIES];
+qboolean			currentValid[MAX_GENTITIES];
+refdef_t			refdef;
+snapshot_t			snap;
 
 /**************************************************
 * LoadPlugins
@@ -40,7 +40,8 @@ snapshot_t		snap;
 * the initialization call is coming in.
 **************************************************/
 
-static void LoadPlugins()
+extern vm_t *cgvm;
+void LoadPlugins()
 {
 	char folderName[256];
 	if (GetModuleFileName(NULL, folderName, 256) != 0) {
@@ -51,7 +52,8 @@ static void LoadPlugins()
 		HANDLE hFind;
 		WIN32_FIND_DATA FindData;
 		char filesNames[256];
-		Com_sprintf(filesNames, 256, "%s\\plugins\\*.dll", folderName);
+		if (cgvm->isLegacy) Com_sprintf(filesNames, 256, "%s\\plugins\\legacy_*.dll", folderName);
+		else Com_sprintf(filesNames, 256, "%s\\plugins\\openjk_*.dll", folderName);
 		hFind = FindFirstFile(filesNames, &FindData);
 		if (hFind != INVALID_HANDLE_VALUE)
 		{
@@ -70,7 +72,7 @@ static void LoadPlugins()
 * Unload the plugins.
 **************************************************/
 
-static void UnloadPlugins()
+void UnloadPlugins()
 {
 	MultiModule_t *pMultiModule = MultiModule;
 	while (pMultiModule) {
@@ -90,7 +92,6 @@ void mppInit() {
 	mppSystemInit(&MultiSystem);
 	MultiPlugin.System = &MultiSystem;
 	MultiModule = NULL;
-	LoadPlugins();
 }
 
 void mppDestroy() {
